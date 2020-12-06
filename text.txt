@@ -1,0 +1,56 @@
+The long way to do it but in a clear way 
+
+// loading animation https://loading.io/
+const imageContainer = document.getElementById("image-container")
+const loader = document.getElementById("loader")
+
+let photosArray =[]
+
+// Unsplash API
+const count = 10
+const apiKey = '2B_2odkQWguX4jlREHYAYUzi1JNra4A_r217sa1N0Ls'
+const apiUrl = `https://api.unsplash.com/photos/random?client_id=${apiKey}&count=${count}`
+
+
+
+// Create Element for links & photos, and add to DOM
+function displayPhotos(){
+    // Run function for each object in photosArray
+    photosArray.forEach((photo) => {
+        
+        // Create <a> to link to unsplash
+        const item = document.createElement("a")
+        item.setAttribute("href", photo.links.html)
+        item.setAttribute("target", "_blank")
+        
+        // create <img> for photo
+        const img = document.createElement("img")
+        img.setAttribute("src", photo.urls.regular)
+        img.setAttribute("alt", photo.alt_description )
+        img.setAttribute("title", photo.alt_description )
+
+        // put <img> inside the <a>, then put both inside imageContainer Element
+        item.appendChild(img)
+        // and put all(both img anf item) that into our imageContainer 
+        imageContainer.appendChild(item)
+    })
+}
+
+
+
+// Get photos from unsplash api
+async function getPhotos(){
+    try{
+        const response = await fetch(apiUrl)
+        photosArray = await response.json()
+        // console loging ot photo array 
+        // console.log(photosArray)
+        displayPhotos()
+
+    }catch(error){
+
+    }
+}
+
+// on load
+getPhotos()
